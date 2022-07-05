@@ -1,17 +1,18 @@
 package com.shubham.famapp.data.entity
 
 
+import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.FormattedDescriptionModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class FormattedDescriptionEntity(
-    @Json(name = "align")
+    @SerializedName("align")
     val align: String?,
-    @Json(name = "entities")
+    @SerializedName("entities")
     val entities: List<Any?>?,
-    @Json(name = "text")
+    @SerializedName("text")
     val text: String?
 )
 fun FormattedDescriptionEntity.convertToModel(): FormattedDescriptionModel = FormattedDescriptionModel(align, entities, text)

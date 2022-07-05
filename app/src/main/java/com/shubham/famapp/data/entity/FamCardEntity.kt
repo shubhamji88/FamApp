@@ -1,14 +1,15 @@
 package com.shubham.famapp.data.entity
 
 
+import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.CardGroupModel
 import com.shubham.famapp.domain.model.FamCardModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class FamCardEntity(
-    @Json(name = "card_groups")
+    @SerializedName("card_groups")
     val cardGroups: List<CardGroupEntity?>?
 )
 

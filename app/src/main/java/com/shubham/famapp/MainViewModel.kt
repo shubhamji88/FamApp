@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.shubham.famapp.domain.model.CardGroupModel
 import com.shubham.famapp.domain.model.FamCardModel
 import com.shubham.famapp.domain.usecase.GetCardDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,11 +14,12 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val cardDataUseCase: GetCardDataUseCase
 ) : ViewModel() {
-    val data = MutableLiveData<FamCardModel>()
+    val data = MutableLiveData<FamCardModel?>()
     fun call(){
 
         viewModelScope.launch {
-//            data.postValue(cardDataUseCase.invoke(GetCardDataUseCase.Params(""))
+            data.postValue(cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrElse { FamCardModel(
+                listOf(CardGroupModel(1,null,"ss",2,3,true,3,"vdf"))) })
         }
     }
 }

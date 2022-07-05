@@ -1,7 +1,11 @@
 package com.shubham.famapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.annotation.MainThread
@@ -17,5 +21,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel.call()
+
+    }
+
+    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
+        viewModel.data.observe(this) {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+        }
+        return super.onCreateView(name, context, attrs)
+
     }
 }

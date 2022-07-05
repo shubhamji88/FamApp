@@ -1,28 +1,29 @@
 package com.shubham.famapp.data.entity
 
 
+import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.CardGroupModel
 import com.shubham.famapp.domain.model.CardModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class CardGroupEntity(
-    @Json(name = "card_type")
+    @SerializedName("card_type")
     val cardType: Int?,
-    @Json(name = "cards")
+    @SerializedName("cards")
     val cards: List<CardEntity?>?,
-    @Json(name = "design_type")
+    @SerializedName("design_type")
     val designType: String?,
-    @Json(name = "height")
+    @SerializedName("height")
     val height: Int?,
-    @Json(name = "id")
+    @SerializedName("id")
     val id: Int?,
-    @Json(name = "is_scrollable")
+    @SerializedName("is_scrollable")
     val isScrollable: Boolean?,
-    @Json(name = "level")
+    @SerializedName("level")
     val level: Int?,
-    @Json(name = "name")
+    @SerializedName("name")
     val name: String?
 )
 fun CardGroupEntity.convertToModel() : CardGroupModel = CardGroupModel(cardType,cards?.map { it?.convertToModel() },designType,height,id,isScrollable,level, name)

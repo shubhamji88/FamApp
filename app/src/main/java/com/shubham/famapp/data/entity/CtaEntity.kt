@@ -1,21 +1,22 @@
 package com.shubham.famapp.data.entity
 
 
+import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.CtaModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class CtaEntity(
-    @Json(name = "bg_color")
+    @SerializedName("bg_color")
     val bgColor: String?,
-    @Json(name = "text")
+    @SerializedName("text")
     val text: String?,
-    @Json(name = "text_color")
+    @SerializedName("text_color")
     val textColor: String?,
-    @Json(name = "url")
+    @SerializedName("url")
     val url: String?,
-    @Json(name = "url_choice")
+    @SerializedName("url_choice")
     val urlChoice: String?
 )
 fun CtaEntity.convertToModel() : CtaModel? = CtaModel(bgColor,text,textColor,url,urlChoice)

@@ -1,34 +1,36 @@
 package com.shubham.famapp.data.entity
 
 
+import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.CardModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class CardEntity(
-    @Json(name = "bg_color")
+    @SerializedName("bg_color")
     val bgColor: String?,
-    @Json(name = "bg_image")
+    @SerializedName("bg_image")
     val bgImage: BgImageEntity?,
-    @Json(name = "cta")
+    @SerializedName("cta")
     val cta: List<CtaEntity?>?,
-    @Json(name = "description")
+    @SerializedName("description")
     val description: String?,
-    @Json(name = "formatted_description")
+    @SerializedName("formatted_description")
     val formattedDescription: FormattedDescriptionEntity?,
-    @Json(name = "formatted_title")
+    @SerializedName("formatted_title")
     val formattedTitle: FormattedTitleEntity?,
-    @Json(name = "icon")
+    @SerializedName("icon")
     val icon: IconEntity?,
-    @Json(name = "is_disabled")
+    @SerializedName("is_disabled")
     val isDisabled: Boolean?,
-    @Json(name = "name")
+    @SerializedName("name")
     val name: String?,
-    @Json(name = "title")
+    @SerializedName("title")
     val title: String?,
-    @Json(name = "url")
+    @SerializedName("url")
     val url: String?
+
 )
 fun CardEntity.convertToModel() : CardModel {
     return CardModel(

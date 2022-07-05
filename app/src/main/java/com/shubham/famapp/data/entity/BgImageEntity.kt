@@ -1,17 +1,18 @@
 package com.shubham.famapp.data.entity
 
 
+import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.BgImageModel
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
+
 data class BgImageEntity(
-    @Json(name = "aspect_ratio")
+    @SerializedName("aspect_ratio")
     val aspectRatio: Double?,
-    @Json(name = "image_type")
+    @SerializedName("image_type")
     val imageType: String?,
-    @Json(name = "image_url")
+    @SerializedName("image_url")
     val imageUrl: String?
 )
 

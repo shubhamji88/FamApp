@@ -12,7 +12,6 @@ import javax.inject.Inject
 
 class GetCardDataUseCase @Inject constructor(
     private val remoteRepo: RemoteRepo,
-    private val moshi: Moshi,
     @IoDispatcher coroutineDispatcher: CoroutineDispatcher
 ) : SuspendUseCase<FamCardModel, GetCardDataUseCase.Params>(coroutineDispatcher) {
 
@@ -23,6 +22,7 @@ class GetCardDataUseCase @Inject constructor(
         if(!remoteData.isSuccessful ){
             return Result.failure(InternetNotAvailable())
         }
+        Log.d("recieved",remoteData.body()!!.toString())
         return Result.success(remoteData.body()!!.convertToDomain())
     }
 }
