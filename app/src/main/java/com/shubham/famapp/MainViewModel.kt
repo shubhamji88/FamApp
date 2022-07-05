@@ -18,8 +18,7 @@ class MainViewModel @Inject constructor(
     fun call(){
 
         viewModelScope.launch {
-            data.postValue(cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrElse { FamCardModel(
-                listOf(CardGroupModel(1,null,"ss",2,3,true,3,"vdf"))) })
+            data.postValue(cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull())
         }
     }
 }
