@@ -1,20 +1,15 @@
 package com.shubham.famapp
 
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.shubham.famapp.databinding.FamViewBinding
 import com.shubham.famapp.databinding.HomeFragmentBinding
-import com.shubham.famapp.domain.model.FamCardModel
 import com.shubham.famapp.ui.adapters.FamAdapter
-import com.shubham.famapp.ui.customView.FamView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,7 +27,7 @@ class HomeFragment: Fragment() {
         famBinding.mainRv.adapter = famAdapter
         viewModel.data.observe(viewLifecycleOwner) {
             if(it?.cardGroups != null)
-                famAdapter.addHeaderAndSubmitList(it.cardGroups)
+                famAdapter.submitDesignList(it.cardGroups)
         }
         viewModel.call()
         return binding.root

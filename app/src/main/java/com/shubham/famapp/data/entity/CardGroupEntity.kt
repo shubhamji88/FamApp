@@ -20,7 +20,7 @@ data class CardGroupEntity(
     @SerializedName("id")
     val id: Int?,
     @SerializedName("is_scrollable")
-    val isScrollable: Boolean?,
+    val isScrollable: Boolean = false,
     @SerializedName("level")
     val level: Int?,
     @SerializedName("name")

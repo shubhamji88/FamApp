@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 class FamAdapter : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerViewDiffCallBack()) {
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addHeaderAndSubmitList(list: List<CardGroupModel>) {
+    fun submitDesignList(list: List<CardGroupModel>) {
         adapterScope.launch {
             val items = list.map { DesignTypes.getType(it.designType,it) }
             withContext(Dispatchers.Main) {
@@ -33,12 +33,41 @@ class FamAdapter : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerVi
             return oldItem==newItem
         }
     }
-    class ViewHolder private constructor(val binding: ItemRecyclerViewBinding) : RecyclerView.ViewHolder(binding.root){
+    class ViewHolder private constructor(private val binding: ItemRecyclerViewBinding) : RecyclerView.ViewHolder(binding.root){
+        private fun bindSmallDisplayCard(cardData: CardGroupModel){
+            val smallDisplayCardAdapter = SmallDisplayCardAdapter()
+            binding.groupItemRv.adapter = smallDisplayCardAdapter
+            smallDisplayCardAdapter.submitList(cardData.cards)
+        }
+        private fun bindBigDisplayCard(cardData: CardGroupModel){
+            val bigDisplayCardAdapter = BigDisplayCardAdapter()
+            binding.groupItemRv.adapter = bigDisplayCardAdapter
+            bigDisplayCardAdapter.submitList(cardData.cards)
+        }
+        private fun bindImageCard(cardData: CardGroupModel){
+            val imageCardAdapter = ImageCardAdapter()
+            binding.groupItemRv.adapter = imageCardAdapter
+            imageCardAdapter.submitList(cardData.cards)
+        }
+        private fun bindSmallCardWithArrowCard(cardData: CardGroupModel){
+            val smallCardWithArrowAdapter = SmallCardWithArrowAdapter()
+            binding.groupItemRv.adapter = smallCardWithArrowAdapter
+            smallCardWithArrowAdapter.submitList(cardData.cards)
+        }
+        private fun bindDynamicWidthCard(cardData: CardGroupModel){
+            val dynamicWidthCardAdapter = DynamicWidthCardAdapter()
+            binding.groupItemRv.adapter = dynamicWidthCardAdapter
+            dynamicWidthCardAdapter.submitList(cardData.cards)
+        }
 
         fun bind(item: DesignTypes) {
-//            when(item){
-//                is DesignTypes.SMALL_DISPLAY_CLASS -> item.cardData
-//            }
+            when(item){
+                is DesignTypes.SMALL_DISPLAY_CLASS -> bindSmallDisplayCard(item.cardData)
+                is DesignTypes.BIG_DISPLAY_CARD -> bindBigDisplayCard(item.cardData)
+                is DesignTypes.IMAGE_CARD -> bindImageCard(item.cardData)
+                is DesignTypes.SMALL_CARD_WITH_ARROW -> bindSmallCardWithArrowCard(item.cardData)
+                is DesignTypes.DYNAMIC_WIDTH_CARD -> bindDynamicWidthCard(item.cardData)
+            }
             binding.executePendingBindings()
         }
 
@@ -52,7 +81,6 @@ class FamAdapter : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerVi
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-//        holder.bind(item,clickListner)
         holder.bind(item)
     }
 

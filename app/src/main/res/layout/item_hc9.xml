@@ -4,9 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
         android:id="@+id/root_view_cv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
         app:cardBackgroundColor="@color/default_bg_hc3"
-        app:cardCornerRadius="16dp">
+        app:cardElevation="@dimen/card_elevation"
+        android:layout_margin="@dimen/card_layout_margin"
+        app:cardCornerRadius="@dimen/card_corner_radius">
     </androidx.cardview.widget.CardView>
 </layout>

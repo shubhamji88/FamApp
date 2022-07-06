@@ -6,7 +6,7 @@ data class CardGroupModel(
     val designType: String,
     val height: Int?,
     val id: Int,
-    val isScrollable: Boolean?,
+    val isScrollable: Boolean =false,
     val level: Int?,
     val name: String?
 )
