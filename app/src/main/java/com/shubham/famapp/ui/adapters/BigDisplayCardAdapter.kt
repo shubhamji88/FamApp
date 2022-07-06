@@ -46,10 +46,15 @@ class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListA
         private fun handleSlidedButton(item: CardModel){
             binding.dismissCv.setOnClickListener {
                 val blockedCards =SharedPrefManager.instance.blockedCards?.toMutableList()?: mutableListOf()
-//                if (!blockedCards.contains(item))
-                    blockedCards.add(item)
+                blockedCards.add(item)
                 SharedPrefManager.instance.blockedCards=blockedCards
             }
+            binding.remindLater.setOnClickListener {
+                val blockedCards =SharedPrefManager.instance.snoozedCards?.toMutableList()?: mutableListOf()
+                blockedCards.add(item)
+                SharedPrefManager.instance.snoozedCards=blockedCards
+            }
+
         }
         fun bind(item: CardModel, clickListener: FamClickListener) {
             handleAnimations()

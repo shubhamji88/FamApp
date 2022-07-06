@@ -36,11 +36,26 @@ class SharedPrefManager(val context: Context) {
             }
         }
 
-
+    var snoozedCards: List<CardModel>?
+        get() {
+            return getString(SNOOZED_CARD_LIST)?.let {
+                if (it.isBlank()) null else
+                    Gson().fromJson(it, Array<CardModel>::class.java).toList()
+            }
+        }
+        set(blockedList) {
+            if (blockedList != null) {
+                setString(
+                    SNOOZED_CARD_LIST,
+                    gson.toJson(blockedList)
+                )
+            }
+        }
     companion object {
         private const val SP_NAME = BuildConfig.APPLICATION_ID
         private const val ACCESS_MODE = Context.MODE_PRIVATE
-        private const val BLOCKED_CARD_LIST = "BLOCKED_CARD_LIST"
+        const val BLOCKED_CARD_LIST = "BLOCKED_CARD_LIST"
+        const val SNOOZED_CARD_LIST = "SNOOZED_CARD_LIST"
         @JvmStatic
         lateinit var instance: SharedPrefManager
             private set

@@ -12,8 +12,11 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import com.shubham.famapp.R
 import com.shubham.famapp.data.SharedPrefManager
+import com.shubham.famapp.data.SharedPrefManager.Companion.BLOCKED_CARD_LIST
+import com.shubham.famapp.data.SharedPrefManager.Companion.SNOOZED_CARD_LIST
 import com.shubham.famapp.databinding.FamViewBinding
 import com.shubham.famapp.domain.model.CardGroupModel
+import com.shubham.famapp.domain.model.CardModel
 import com.shubham.famapp.ui.adapters.FamAdapter
 import com.shubham.famapp.ui.adapters.FamClickListener
 
@@ -33,7 +36,7 @@ class FamView @JvmOverloads constructor(
 
     fun initView(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
         if(::binding.isInitialized){
-            dataReloaded()
+            dataReloaded(removedFromData(BLOCKED_CARD_LIST))
             listData = data
             return
         }
@@ -41,7 +44,7 @@ class FamView @JvmOverloads constructor(
         binding = DataBindingUtil.inflate(inflater,R.layout.fam_view, this, true)
         listData = data
         initRecyclerView()
-        removedDismissedData()
+        dataReloaded(removedFromData(BLOCKED_CARD_LIST))
         handleSwipeReload(reloadClickListener)
     }
 
@@ -54,16 +57,23 @@ class FamView @JvmOverloads constructor(
         super.invalidate()
         SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
     }
-    private fun removedDismissedData(): MutableList<CardGroupModel> {
-        val blockedList = SharedPrefManager.instance.blockedCards?.toList()
+    private fun removedFromData(sharedPrefKey:String): MutableList<CardGroupModel> {
+        val blockedList = when(sharedPrefKey){
+            BLOCKED_CARD_LIST -> SharedPrefManager.instance.blockedCards?.toList()
+            SNOOZED_CARD_LIST -> SharedPrefManager.instance.snoozedCards?.toList()
+            else -> emptyList()
+        }
+        if(blockedList.isNullOrEmpty()){
+            return listData.toMutableList()
+        }
         val newList = listData.toMutableList()
         newList.forEach { cardModel->
             if(cardModel.designType=="HC3"){
                 newList.remove(cardModel)
                 val tempCardModelCards =cardModel.cards?.toMutableList()
-                if(blockedList?.let { tempCardModelCards?.removeAll(it) } == true) {
+                if(tempCardModelCards?.removeAll(blockedList)== true) {
                     cardModel.cards = tempCardModelCards
-                }else if(tempCardModelCards?.remove(blockedList?.get(0))==true){
+                }else if(tempCardModelCards?.remove(blockedList[0])==true){
                     cardModel.cards = tempCardModelCards
                 }
                 if(tempCardModelCards?.size!=0){
@@ -71,14 +81,13 @@ class FamView @JvmOverloads constructor(
                 }
             }
         }
-        listData = newList
         return newList
     }
-    private val sharedPreferencesChangeListener =SharedPreferences.OnSharedPreferenceChangeListener{ _, _ ->
-        dataReloaded()
-    }
-    private fun dataReloaded() {
-        famAdapter.submitDesignList(removedDismissedData())
+    private val sharedPreferencesChangeListener =SharedPreferences.OnSharedPreferenceChangeListener{ _, key ->
+            dataReloaded(removedFromData(key))
+        }
+    private fun dataReloaded(data : MutableList<CardGroupModel>) {
+        famAdapter.submitDesignList(data)
         binding.swipeLayout.isRefreshing = false
     }
 
@@ -86,7 +95,7 @@ class FamView @JvmOverloads constructor(
         famAdapter = FamAdapter (FamClickListener{ url->
             openUrl(url)
         })
-        famAdapter.submitDesignList(removedDismissedData())
+        famAdapter.submitDesignList(removedFromData(BLOCKED_CARD_LIST))
         binding.mainRv.adapter = famAdapter
     }
     private fun handleSwipeReload(reloadClickListener: ReloadClickListener) {
