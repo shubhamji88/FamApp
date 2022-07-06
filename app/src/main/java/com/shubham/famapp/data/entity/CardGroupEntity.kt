@@ -26,4 +26,5 @@ data class CardGroupEntity(
     @SerializedName("name")
     val name: String?
 )
-fun CardGroupEntity.convertToModel() : CardGroupModel = CardGroupModel(cardType,cards?.map { it?.convertToModel() },designType,height,id,isScrollable,level, name)
+//TODO remove !!
+fun CardGroupEntity.convertToModel() : CardGroupModel = CardGroupModel(cardType,cards?.map { it?.convertToModel() },designType!!,height,id!!,isScrollable,level, name)

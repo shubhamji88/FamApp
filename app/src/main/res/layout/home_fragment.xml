@@ -9,15 +9,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <com.shubham.famapp.ui.customView.FamView
-            android:id="@+id/fam_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <include
+                android:id="@+id/fam_view_layout"
+                layout="@layout/fam_view"
+                />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

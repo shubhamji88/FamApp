@@ -12,5 +12,5 @@ data class FamCardEntity(
     @SerializedName("card_groups")
     val cardGroups: List<CardGroupEntity?>?
 )
-
-fun FamCardEntity.convertToDomain() : FamCardModel = FamCardModel(cardGroups?.map { it?.convertToModel() })
+//TODO remove !!
+fun FamCardEntity.convertToDomain() : FamCardModel = FamCardModel(cardGroups?.map { it?.convertToModel()!! })
