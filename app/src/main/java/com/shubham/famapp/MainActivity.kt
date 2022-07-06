@@ -16,19 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel.call()
-
-    }
-
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        viewModel.data.observe(this) {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-        }
-        return super.onCreateView(name, context, attrs)
-
     }
 }
