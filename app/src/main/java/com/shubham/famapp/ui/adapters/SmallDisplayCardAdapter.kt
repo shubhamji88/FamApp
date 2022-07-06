@@ -24,6 +24,7 @@ class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : Lis
             binding.title.text = title
             binding.description.text = description
             binding.title.gravity = Utils.getTextAlignment(item.formattedTitle)
+            binding.rootViewCv.isEnabled = !item.isDisabled
             binding.executePendingBindings()
         }
         companion object {

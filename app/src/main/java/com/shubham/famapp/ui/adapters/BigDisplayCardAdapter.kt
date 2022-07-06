@@ -26,6 +26,7 @@ class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListA
             binding.titleTv.text = title
             binding.descriptionTv.text= description
             binding.titleTv.gravity = Utils.getTextAlignment(item.formattedTitle)
+            binding.rootViewCv.isEnabled = !item.isDisabled
             binding.executePendingBindings()
         }
         companion object {

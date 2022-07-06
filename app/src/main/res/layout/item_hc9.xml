@@ -2,13 +2,32 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="imageURL"
+            type="String" />
+    </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/root_view_cv"
         android:layout_width="150dp"
-        android:layout_height="78dp"
-        app:cardBackgroundColor="@color/default_bg_hc3"
+        android:layout_height="match_parent"
         app:cardElevation="@dimen/card_elevation"
         android:layout_margin="@dimen/card_layout_margin"
         app:cardCornerRadius="@dimen/card_corner_radius">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/background_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:imageUrl="@{imageURL}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

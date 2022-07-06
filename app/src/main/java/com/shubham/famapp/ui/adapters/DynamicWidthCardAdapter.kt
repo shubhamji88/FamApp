@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.shubham.famapp.Utils
 import com.shubham.famapp.databinding.ItemHc9Binding
 import com.shubham.famapp.domain.model.CardModel
 
@@ -12,7 +13,13 @@ class DynamicWidthCardAdapter(private val clickListener: FamClickListener) : Lis
     class ViewHolder private constructor(private val binding: ItemHc9Binding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: CardModel, clickListener: FamClickListener) {
-
+            if(item.url!=null && !item.isDisabled){
+                binding.rootViewCv.setOnClickListener {
+                    clickListener.openUrl(item.url)
+                }
+            }
+            binding.imageURL = item.bgImage?.imageUrl
+            binding.rootViewCv.isEnabled = !item.isDisabled
             binding.executePendingBindings()
         }
         companion object {

@@ -19,6 +19,7 @@ class ImageCardAdapter(private val clickListener: FamClickListener) : ListAdapte
                 }
             }
             binding.imageURL = item.bgImage?.imageUrl
+            binding.rootViewCv.isEnabled = !item.isDisabled
             binding.executePendingBindings()
         }
         companion object {
