@@ -1,17 +1,30 @@
 package com.shubham.famapp.ui.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.shubham.famapp.Utils
 import com.shubham.famapp.databinding.ItemHc3Binding
 import com.shubham.famapp.domain.model.CardModel
+import com.shubham.famapp.domain.model.CtaModel
+import com.shubham.famapp.domain.model.FormattedTextModel
 
 class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, BigDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc3Binding) : RecyclerView.ViewHolder(binding.root){
-
+        private fun updateCallToAction(item: CtaModel, clickListener: FamClickListener){
+            if(item.url!=null) {
+                binding.actionBtn.setOnClickListener {
+                    clickListener.openUrl(item.url)
+                }
+            }
+            binding.actionBtn.text = item.text
+            binding.actionBtn.setTextColor(Color.parseColor(item.textColor))
+            binding.actionBtn.setBackgroundColor(Color.parseColor(item.bgColor))
+        }
         fun bind(item: CardModel, clickListener: FamClickListener) {
             val title = Utils.getFormattedText(item.formattedTitle) ?: item.title
             val description = Utils.getFormattedText(item.formattedDescription) ?: item.description
@@ -20,8 +33,11 @@ class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListA
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.icon?.imageUrl!=null && item.icon.imageType == "ext") {
-                binding.imageURL = item.icon.imageUrl
+            if(item.bgImage?.imageUrl!=null && item.bgImage.imageType == "ext") {
+                binding.imageURL = item.bgImage.imageUrl
+            }
+            if(item.cta!=null && item.cta[0]!=null){
+                updateCallToAction(item.cta[0]!!,clickListener)
             }
             binding.titleTv.text = title
             binding.descriptionTv.text= description
