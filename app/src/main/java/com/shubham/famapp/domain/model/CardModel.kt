@@ -8,7 +8,7 @@ data class CardModel(
     val formattedDescription: FormattedTextModel?,
     val formattedTitle: FormattedTextModel?,
     val icon: IconModel?,
-    val isDisabled: Boolean?,
+    val isDisabled: Boolean=false,
     val name: String?,
     val title: String?,
     val url: String?

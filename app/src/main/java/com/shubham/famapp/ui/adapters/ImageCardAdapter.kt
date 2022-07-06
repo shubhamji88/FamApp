@@ -13,14 +13,12 @@ class ImageCardAdapter(private val clickListener: FamClickListener) : ListAdapte
     class ViewHolder private constructor(private val binding: ItemHc5Binding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: CardModel, clickListener: FamClickListener) {
-            if(item.url!=null){
+            if(item.url!=null && !item.isDisabled){
                 binding.rootViewCv.setOnClickListener {
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.bgImage!=null) {
-                Utils.loadImage(binding.backgroundIv, item.bgImage.imageUrl,item.bgImage.aspectRatio)
-            }
+            binding.imageURL = item.bgImage?.imageUrl
             binding.executePendingBindings()
         }
         companion object {

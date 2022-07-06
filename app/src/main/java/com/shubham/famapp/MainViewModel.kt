@@ -8,7 +8,9 @@ import com.shubham.famapp.domain.model.CardGroupModel
 import com.shubham.famapp.domain.model.FamCardModel
 import com.shubham.famapp.domain.usecase.GetCardDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
@@ -18,6 +20,13 @@ class MainViewModel @Inject constructor(
     fun call(){
 
         viewModelScope.launch {
+            coroutineScope {
+
+
+            }
+            supervisorScope {
+
+            }
             data.postValue(cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull())
         }
     }

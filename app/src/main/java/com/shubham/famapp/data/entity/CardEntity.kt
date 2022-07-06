@@ -23,7 +23,7 @@ data class CardEntity(
     @SerializedName("icon")
     val icon: IconEntity?,
     @SerializedName("is_disabled")
-    val isDisabled: Boolean?,
+    val isDisabled: Boolean=false,
     @SerializedName("name")
     val name: String?,
     @SerializedName("title")

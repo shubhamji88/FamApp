@@ -1,5 +1,7 @@
 package com.shubham.famapp
 
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.Gravity
 import android.widget.ImageView
 import androidx.core.net.toUri
@@ -31,18 +33,10 @@ class Utils {
                 else -> Gravity.NO_GRAVITY
             }
         }
-
-        fun loadImage(imgView: ImageView, url: String?, size: Double?) {
-            val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
-            Glide.with(imgView.context)
-                .load(imgUri)
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.ic_baseline_loading_24)
-                        .error(R.drawable.asset_accout)
-                )
-                .into(imgView)
-        }
+        val Number.toPx get() = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            this.toFloat(),
+            Resources.getSystem().displayMetrics)
     }
 }
 

@@ -16,14 +16,11 @@ class SmallCardWithArrowAdapter(private val clickListener: FamClickListener) : L
         fun bind(item: CardModel, clickListener: FamClickListener,) {
             val title = Utils.getFormattedText(item.formattedTitle) ?: item.title
             val description = Utils.getFormattedText(item.formattedDescription) ?: item.description
-            if(item.url!=null){
+            if(item.url!=null && !item.isDisabled){
                 binding.rootViewCv.setOnClickListener {
                     clickListener.openUrl(item.url)
                 }
             }
-//            if(item.icon!=null) {
-//                Utils.loadImage(binding.iconIv, item.icon.imageUrl,item.icon.aspectRatio)
-//            }
             binding.imageURL = item.icon?.imageUrl
             binding.title.text = title
             binding.description.text = description

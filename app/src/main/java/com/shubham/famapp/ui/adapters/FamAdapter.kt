@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.shubham.famapp.Utils.Companion.toPx
 import com.shubham.famapp.databinding.ItemRecyclerViewBinding
 import com.shubham.famapp.domain.DesignTypes
 import com.shubham.famapp.domain.model.CardGroupModel
@@ -64,6 +65,9 @@ class FamAdapter(private val clickListener: FamClickListener) : ListAdapter<Desi
         private fun bindDynamicWidthCard(cardData: CardGroupModel, clickListener: FamClickListener){
             val dynamicWidthCardAdapter = DynamicWidthCardAdapter(clickListener)
             binding.groupItemRv.adapter = dynamicWidthCardAdapter
+            if(cardData.height!=null){
+                binding.groupItemRv.layoutParams.height=cardData.height.toPx.toInt()
+            }
             dynamicWidthCardAdapter.submitList(cardData.cards)
         }
 
@@ -82,7 +86,6 @@ class FamAdapter(private val clickListener: FamClickListener) : ListAdapter<Desi
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemRecyclerViewBinding.inflate(layoutInflater, parent, false)
-                binding.groupItemRv
                 return ViewHolder(binding)
             }
         }

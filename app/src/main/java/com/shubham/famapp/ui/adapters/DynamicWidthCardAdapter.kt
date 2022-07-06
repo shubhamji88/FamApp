@@ -2,19 +2,17 @@ package com.shubham.famapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.shubham.famapp.databinding.ItemHc1Binding
 import com.shubham.famapp.databinding.ItemHc9Binding
-import com.shubham.famapp.databinding.ItemRecyclerViewBinding
 import com.shubham.famapp.domain.model.CardModel
 
 class DynamicWidthCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, DynamicWidthCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc9Binding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: CardModel) {
+        fun bind(item: CardModel, clickListener: FamClickListener) {
+
             binding.executePendingBindings()
         }
         companion object {
@@ -27,7 +25,7 @@ class DynamicWidthCardAdapter(private val clickListener: FamClickListener) : Lis
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item,clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
