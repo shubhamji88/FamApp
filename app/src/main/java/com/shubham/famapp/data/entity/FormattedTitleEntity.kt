@@ -2,10 +2,7 @@ package com.shubham.famapp.data.entity
 
 
 import com.google.gson.annotations.SerializedName
-import com.shubham.famapp.domain.model.FormattedDescriptionModel
-import com.shubham.famapp.domain.model.FormattedTitleModel
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import com.shubham.famapp.domain.model.FormattedTextModel
 
 data class FormattedTitleEntity(
     @SerializedName("align")
@@ -15,4 +12,4 @@ data class FormattedTitleEntity(
     @SerializedName("text")
     val text: String?
 )
-fun FormattedTitleEntity.convertToModel(): FormattedTitleModel = FormattedTitleModel(align, entities, text)
+fun FormattedTitleEntity.convertToModel(): FormattedTextModel = FormattedTextModel(align, entities, text)

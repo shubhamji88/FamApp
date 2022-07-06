@@ -9,7 +9,7 @@ import com.shubham.famapp.databinding.ItemHc1Binding
 import com.shubham.famapp.databinding.ItemRecyclerViewBinding
 import com.shubham.famapp.domain.model.CardModel
 
-class SmallDisplayCardAdapter : ListAdapter<CardModel, SmallDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
+class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, SmallDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc1Binding) : RecyclerView.ViewHolder(binding.root){
 

@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FamAdapter : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerViewDiffCallBack()) {
+class FamAdapter(private val clickListener: FamClickListener) : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerViewDiffCallBack()) {
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun submitDesignList(list: List<CardGroupModel>) {
@@ -34,39 +34,46 @@ class FamAdapter : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerVi
         }
     }
     class ViewHolder private constructor(private val binding: ItemRecyclerViewBinding) : RecyclerView.ViewHolder(binding.root){
-        private fun bindSmallDisplayCard(cardData: CardGroupModel){
-            val smallDisplayCardAdapter = SmallDisplayCardAdapter()
+        private fun bindSmallDisplayCard(cardData: CardGroupModel, clickListener: FamClickListener){
+            val smallDisplayCardAdapter = SmallDisplayCardAdapter(clickListener)
             binding.groupItemRv.adapter = smallDisplayCardAdapter
+            binding.groupItemRv.isNestedScrollingEnabled = cardData.isScrollable
             smallDisplayCardAdapter.submitList(cardData.cards)
         }
-        private fun bindBigDisplayCard(cardData: CardGroupModel){
-            val bigDisplayCardAdapter = BigDisplayCardAdapter()
+        private fun bindBigDisplayCard(cardData: CardGroupModel, clickListener: FamClickListener){
+            val bigDisplayCardAdapter = BigDisplayCardAdapter(clickListener)
             binding.groupItemRv.adapter = bigDisplayCardAdapter
+            binding.groupItemRv.isNestedScrollingEnabled = cardData.isScrollable
             bigDisplayCardAdapter.submitList(cardData.cards)
         }
-        private fun bindImageCard(cardData: CardGroupModel){
-            val imageCardAdapter = ImageCardAdapter()
+        private fun bindImageCard(cardData: CardGroupModel, clickListener: FamClickListener){
+            val imageCardAdapter = ImageCardAdapter(clickListener)
             binding.groupItemRv.adapter = imageCardAdapter
+            binding.groupItemRv.isNestedScrollingEnabled = cardData.isScrollable
             imageCardAdapter.submitList(cardData.cards)
         }
-        private fun bindSmallCardWithArrowCard(cardData: CardGroupModel){
-            val smallCardWithArrowAdapter = SmallCardWithArrowAdapter()
+        private fun bindSmallCardWithArrowCard(
+            cardData: CardGroupModel,
+            clickListener: FamClickListener
+        ){
+            val smallCardWithArrowAdapter = SmallCardWithArrowAdapter(clickListener)
             binding.groupItemRv.adapter = smallCardWithArrowAdapter
+            binding.groupItemRv.isNestedScrollingEnabled = cardData.isScrollable
             smallCardWithArrowAdapter.submitList(cardData.cards)
         }
-        private fun bindDynamicWidthCard(cardData: CardGroupModel){
-            val dynamicWidthCardAdapter = DynamicWidthCardAdapter()
+        private fun bindDynamicWidthCard(cardData: CardGroupModel, clickListener: FamClickListener){
+            val dynamicWidthCardAdapter = DynamicWidthCardAdapter(clickListener)
             binding.groupItemRv.adapter = dynamicWidthCardAdapter
             dynamicWidthCardAdapter.submitList(cardData.cards)
         }
 
-        fun bind(item: DesignTypes) {
+        fun bind(item: DesignTypes,clickListener: FamClickListener) {
             when(item){
-                is DesignTypes.SMALL_DISPLAY_CLASS -> bindSmallDisplayCard(item.cardData)
-                is DesignTypes.BIG_DISPLAY_CARD -> bindBigDisplayCard(item.cardData)
-                is DesignTypes.IMAGE_CARD -> bindImageCard(item.cardData)
-                is DesignTypes.SMALL_CARD_WITH_ARROW -> bindSmallCardWithArrowCard(item.cardData)
-                is DesignTypes.DYNAMIC_WIDTH_CARD -> bindDynamicWidthCard(item.cardData)
+                is DesignTypes.SMALL_DISPLAY_CLASS -> bindSmallDisplayCard(item.cardData,clickListener)
+                is DesignTypes.BIG_DISPLAY_CARD -> bindBigDisplayCard(item.cardData,clickListener)
+                is DesignTypes.IMAGE_CARD -> bindImageCard(item.cardData,clickListener)
+                is DesignTypes.SMALL_CARD_WITH_ARROW -> bindSmallCardWithArrowCard(item.cardData,clickListener)
+                is DesignTypes.DYNAMIC_WIDTH_CARD -> bindDynamicWidthCard(item.cardData,clickListener)
             }
             binding.executePendingBindings()
         }
@@ -75,16 +82,20 @@ class FamAdapter : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerVi
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemRecyclerViewBinding.inflate(layoutInflater, parent, false)
+                binding.groupItemRv
                 return ViewHolder(binding)
             }
         }
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item,clickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
+}
+class FamClickListener(val openUrlClickListener: (String)-> Unit){
+    fun openUrl(url :String)= openUrlClickListener(url)
 }

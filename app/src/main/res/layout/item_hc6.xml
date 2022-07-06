@@ -2,6 +2,11 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="imageURL"
+            type="String" />
+    </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/root_view_cv"
         android:layout_width="match_parent"
@@ -9,6 +14,7 @@
         app:cardElevation="@dimen/card_elevation"
         android:layout_margin="@dimen/card_layout_margin"
         app:cardCornerRadius="@dimen/card_corner_radius">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -26,7 +32,7 @@
                 android:layout_height="64dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:src="@drawable/asset_accout"
+                app:imageUrl="@{imageURL}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toTopOf="parent"
@@ -38,17 +44,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="Big display card with action"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                android:textSize="18sp"
-                android:singleLine="true"
                 android:textColor="@color/black"
+                android:textSize="16sp"
                 app:fontFamily="@font/roboto"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintEnd_toStartOf="@+id/front_arrow_iv"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Big display card with action"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:fontFamily="@font/roboto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/title"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
             <ImageView
                 android:id="@+id/front_arrow_iv"

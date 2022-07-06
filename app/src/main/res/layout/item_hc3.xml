@@ -42,7 +42,7 @@
 
             <TextView
                 android:id="@+id/heading_tv"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Big display card\nwith action"
@@ -57,7 +57,7 @@
 
             <TextView
                 android:id="@+id/decsription_tv"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Big display card\nwith action"

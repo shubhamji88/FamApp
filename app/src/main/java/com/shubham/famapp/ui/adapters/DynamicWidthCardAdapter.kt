@@ -10,7 +10,7 @@ import com.shubham.famapp.databinding.ItemHc9Binding
 import com.shubham.famapp.databinding.ItemRecyclerViewBinding
 import com.shubham.famapp.domain.model.CardModel
 
-class DynamicWidthCardAdapter : ListAdapter<CardModel, DynamicWidthCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
+class DynamicWidthCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, DynamicWidthCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc9Binding) : RecyclerView.ViewHolder(binding.root){
 
