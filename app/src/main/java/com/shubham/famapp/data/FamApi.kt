@@ -6,6 +6,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface FamApi {
-    @GET("v3/fefcfbeb-5c12-4722-94ad-b8f92caad1ad")
+    @GET("d64c5505-10e2-4fb1-8356-9bd275ce88d1")
     fun getCardDataAsync() : Deferred<Response<FamCardEntity>>
 }

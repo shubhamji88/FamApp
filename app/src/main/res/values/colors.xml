@@ -12,4 +12,5 @@
     //Hc3
     <color name="default_bg_hc3">#454AA6</color>
     <color name="default_yellow_hc3">#FBAF03</color>
+    <color name="slided_card_background">#F7F6F3</color>
 </resources>

@@ -37,7 +37,7 @@ object AppModule {
     @Provides
     @Singleton
     @Named("base_url")
-    fun providesBaseURL():String = "https://run.mocky.io/"
+    fun providesBaseURL():String = "https://webhook.site/"
 
     @Provides
     @Singleton
