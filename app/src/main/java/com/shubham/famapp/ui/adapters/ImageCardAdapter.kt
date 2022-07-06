@@ -18,7 +18,7 @@ class ImageCardAdapter(private val clickListener: FamClickListener) : ListAdapte
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.bgImage?.imageType==null && item.bgImage?.imageType == "ext") {
+            if(item.bgImage?.imageType!=null && item.bgImage?.imageType == "ext") {
                 binding.imageURL = item.bgImage.imageUrl
             }
             binding.rootViewCv.isEnabled = !item.isDisabled

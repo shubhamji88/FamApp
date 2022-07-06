@@ -1,6 +1,8 @@
 package com.shubham.famapp
 
 import android.content.res.Resources
+import android.text.Html
+import android.text.Spanned
 import android.util.TypedValue
 import android.view.Gravity
 import android.widget.ImageView
@@ -14,16 +16,17 @@ import com.shubham.famapp.domain.model.TextEntitiesModel
 
 class Utils {
     companion object{
-        fun getFormattedText(data : FormattedTextModel?): String? {
+        fun getFormattedText(data : FormattedTextModel?): Spanned? {
             if(data?.entities == null || data.text==null){
                 return null
             }
-            val entities = data.entities as  List<TextEntitiesModel>
-            val resultText = data.text
+            val entities = data.entities
+            var resultText = "<string>"+data.text
             entities.forEach { model ->
-                resultText.replace("{}","<font color='${model.color}'>${model.text}</font>")
+                resultText = resultText!!.replace("{}","<font color='${model?.color}'>${model?.text}</font>")
             }
-            return resultText
+            resultText+="</string>"
+            return Html.fromHtml(resultText)
         }
         fun getTextAlignment(data : FormattedTextModel?): Int {
             return when(data?.align){

@@ -18,15 +18,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     val data = MutableLiveData<FamCardModel?>()
     fun call(){
-
         viewModelScope.launch {
-            coroutineScope {
-
-
-            }
-            supervisorScope {
-
-            }
             data.postValue(cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull())
         }
     }

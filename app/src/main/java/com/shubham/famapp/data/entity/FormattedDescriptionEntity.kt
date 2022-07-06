@@ -9,8 +9,8 @@ data class FormattedDescriptionEntity(
     @SerializedName("align")
     val align: String?,
     @SerializedName("entities")
-    val entities: List<Any?>?,
+    val entities: List<TextEntitiesEntity?>?,
     @SerializedName("text")
     val text: String?
 )
-fun FormattedDescriptionEntity.convertToModel(): FormattedTextModel = FormattedTextModel(align, entities, text)
+fun FormattedDescriptionEntity.convertToModel(): FormattedTextModel = FormattedTextModel(align, entities?.map { it?.convertToModel() }, text)
