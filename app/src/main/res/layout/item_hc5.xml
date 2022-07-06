@@ -14,15 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!--            <androidx.constraintlayout.widget.Guideline-->
-            <!--                android:id="@+id/guideline2"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:orientation="vertical"-->
-            <!--                app:layout_constraintGuide_percent="0.40" />-->
+
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/background_iv"
                 android:layout_width="match_parent"
                 android:layout_height="128dp"
                 android:scaleType="fitXY"
@@ -32,11 +27,20 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <ImageView
+                android:id="@+id/fire_man_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/asset_fire_man"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:singleLine="true"
                 android:text="Big display card with action"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -45,7 +49,8 @@
                 android:textStyle="bold"
                 app:fontFamily="@font/roboto"
                 app:layout_constraintBottom_toTopOf="@+id/title2"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/background_iv"
+                app:layout_constraintStart_toEndOf="@+id/fire_man_iv"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
