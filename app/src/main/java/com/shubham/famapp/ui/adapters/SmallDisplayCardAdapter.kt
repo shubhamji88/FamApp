@@ -20,7 +20,9 @@ class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : Lis
                     clickListener.openUrl(item.url)
                 }
             }
-            binding.imageURL = item.icon?.imageUrl
+            if(item.icon?.imageType==null && item.icon?.imageType == "ext") {
+                binding.imageURL = item.icon.imageUrl
+            }
             binding.title.text = title
             binding.description.text = description
             binding.title.gravity = Utils.getTextAlignment(item.formattedTitle)

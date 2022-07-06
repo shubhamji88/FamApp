@@ -20,7 +20,7 @@ class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListA
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.icon?.imageUrl!=null) {
+            if(item.icon?.imageUrl!=null && item.icon.imageType == "ext") {
                 binding.imageURL = item.icon.imageUrl
             }
             binding.titleTv.text = title

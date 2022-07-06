@@ -18,7 +18,9 @@ class DynamicWidthCardAdapter(private val clickListener: FamClickListener) : Lis
                     clickListener.openUrl(item.url)
                 }
             }
-            binding.imageURL = item.bgImage?.imageUrl
+            if(item.bgImage?.imageType==null && item.bgImage?.imageType == "ext") {
+                binding.imageURL = item.bgImage.imageUrl
+            }
             binding.rootViewCv.isEnabled = !item.isDisabled
             binding.executePendingBindings()
         }
