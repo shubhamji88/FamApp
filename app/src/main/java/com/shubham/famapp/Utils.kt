@@ -48,7 +48,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .apply(
                 RequestOptions()
                     .placeholder(R.drawable.ic_baseline_loading_24)
-                    .error(R.drawable.asset_accout)
+                    .error(R.drawable.transparent)
             )
             .into(imgView)
 }
