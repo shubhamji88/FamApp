@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.shubham.famapp.databinding.HomeFragmentBinding
 import com.shubham.famapp.ui.adapters.FamAdapter
 import com.shubham.famapp.ui.adapters.FamClickListener
+import com.shubham.famapp.ui.customView.ReloadClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,12 +26,18 @@ class HomeFragment: Fragment() {
     ): View {
         binding= DataBindingUtil.inflate(inflater,R.layout.home_fragment,container,false)
         refreshData()
+        initFamView()
+        return binding.root
+    }
+
+    private fun initFamView(){
         viewModel.data.observe(viewLifecycleOwner) {
             if(it?.cardGroups != null) {
-                binding.famView.initView(it)
+                binding.famView.initView(it.cardGroups, ReloadClickListener {
+                    refreshData()
+                })
             }
         }
-        return binding.root
     }
 
     private fun refreshData(){

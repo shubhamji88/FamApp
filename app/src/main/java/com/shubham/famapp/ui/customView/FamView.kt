@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import com.shubham.famapp.R
 import com.shubham.famapp.databinding.FamViewBinding
+import com.shubham.famapp.domain.model.CardGroupModel
 import com.shubham.famapp.domain.model.FamCardModel
 import com.shubham.famapp.ui.adapters.FamAdapter
 import com.shubham.famapp.ui.adapters.FamClickListener
@@ -29,16 +30,37 @@ class FamView @JvmOverloads constructor(
 ) {
 
 
-    fun initView(data: FamCardModel) {
-        listData = data
+    fun initView(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
+        if(::binding.isInitialized){
+            dataReloaded(data)
+            return
+        }
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = DataBindingUtil.inflate(inflater,R.layout.fam_view, this, true)
-        val famAdapter = FamAdapter (FamClickListener{ url->
+        listData = data
+        initRecyclerView()
+        handleSwipeReload(reloadClickListener)
+    }
+
+    private fun dataReloaded(data: List<CardGroupModel>) {
+        listData = data
+        famAdapter.submitDesignList(listData)
+        binding.swipeLayout.isRefreshing = false
+    }
+
+    private fun initRecyclerView(){
+        famAdapter = FamAdapter (FamClickListener{ url->
             openUrl(url)
         })
-        famAdapter.submitDesignList(data.cardGroups!!)
+        famAdapter.submitDesignList(listData)
         binding.mainRv.adapter = famAdapter
     }
+    private fun handleSwipeReload(reloadClickListener: ReloadClickListener) {
+        binding.swipeLayout.setOnRefreshListener {
+            reloadClickListener.onReload()
+        }
+    }
+
     private fun openUrl(url:String){
         startActivity(context,
             Intent(
@@ -47,7 +69,10 @@ class FamView @JvmOverloads constructor(
             ),null
         )
     }
-
+    private lateinit var famAdapter : FamAdapter
     private lateinit var binding: FamViewBinding
-    lateinit var listData: FamCardModel
+    private lateinit var listData: List<CardGroupModel>
+}
+class ReloadClickListener(val reloadClickListener: (Unit)-> Unit){
+    fun onReload()= reloadClickListener(Unit)
 }
