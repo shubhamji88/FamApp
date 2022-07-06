@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.shubham.famapp.domain.model.BgImageModel
 import com.shubham.famapp.domain.model.FormattedTextModel
 import com.shubham.famapp.domain.model.TextEntitiesModel
 
@@ -30,6 +31,18 @@ class Utils {
                 else -> Gravity.NO_GRAVITY
             }
         }
+
+        fun loadImage(imgView: ImageView, url: String?, size: Double?) {
+            val imgUri = url?.toUri()?.buildUpon()?.scheme("https")?.build()
+            Glide.with(imgView.context)
+                .load(imgUri)
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.ic_baseline_loading_24)
+                        .error(R.drawable.asset_accout)
+                )
+                .into(imgView)
+        }
     }
 }
 
@@ -38,7 +51,6 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
         val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
         Glide.with(imgView.context)
             .load(imgUri)
-            .circleCrop()
             .apply(
                 RequestOptions()
                     .placeholder(R.drawable.ic_baseline_loading_24)

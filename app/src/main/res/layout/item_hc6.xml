@@ -27,7 +27,7 @@
                 app:layout_constraintGuide_begin="20dp" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/icon_iv"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginTop="16dp"
@@ -54,7 +54,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/description"
                 app:layout_constraintEnd_toStartOf="@+id/front_arrow_iv"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toEndOf="@+id/icon_iv"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 

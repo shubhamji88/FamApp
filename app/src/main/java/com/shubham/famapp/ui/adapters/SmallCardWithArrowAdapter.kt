@@ -21,6 +21,9 @@ class SmallCardWithArrowAdapter(private val clickListener: FamClickListener) : L
                     clickListener.openUrl(item.url)
                 }
             }
+//            if(item.icon!=null) {
+//                Utils.loadImage(binding.iconIv, item.icon.imageUrl,item.icon.aspectRatio)
+//            }
             binding.imageURL = item.icon?.imageUrl
             binding.title.text = title
             binding.description.text = description
