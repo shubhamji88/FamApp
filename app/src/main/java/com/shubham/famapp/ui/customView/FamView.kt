@@ -107,13 +107,8 @@ class FamView @JvmOverloads constructor(
             if(cardModel.designType=="HC3"){
                 cardModel.cards?.forEach { card->
                     if(card!=null && blockedList.contains(card.uid)){
-                        val tempList = cardModel.cards!!.toMutableList()
-                        tempList.removeIf { temp: CardModel? -> temp?.uid == card.uid }
-                        cardModel.cards = tempList
+                        newList.remove(cardModel)
                     }
-                }
-                if(cardModel.cards.isNullOrEmpty()){
-                    newList.remove(cardModel)
                 }
             }
         }
