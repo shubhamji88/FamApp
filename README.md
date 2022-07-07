@@ -8,6 +8,39 @@ reloading data.
 ## APK LINK
 https://drive.google.com/file/d/16hYMZ2rD1i5t5IWo0q2sxFjryV7geJPZ/view?usp=sharing
 
+
+## Project's Files Structure
+
+1. data:
+
+    i. entity: entity classes for api response
+  
+    ii. repository: RemoteRepoImpl an implementation of RemoteRepo that returns Deferred<Response<FamCardEntity>>
+  
+    iii. FamApi: Interface for retrofit for fetching data
+  
+   iv. SharedPrefManager: Used for shared prefrences 
+  
+2. di: dependency injection files
+3. domain:
+  
+    i. model: data classes used by FamView 
+  
+    ii. repository: Interface of remoteRepo
+  
+   iii. Usecases: used for fetching data using repo and converting entity to model
+  
+    iv. DesignTypes: used by FamView to determine type of cards 
+4. ui:
+  
+    i.adapters: different adapters for different types of cards
+  
+   ii.customView: for FamView
+  
+    iii.Utils: common functions used by different adapters
+  
+    iv. Fragment and activity: example of how HomeFramgnet has used Famview
+  
 ## App's Data flow
 ![image](https://user-images.githubusercontent.com/56815364/177750163-86ea39d6-bbcb-412e-906e-b140295daafb.png)
 
