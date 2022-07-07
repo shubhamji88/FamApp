@@ -61,7 +61,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
         .load(imgUri)
         .apply(
             RequestOptions()
-                .placeholder(R.drawable.ic_baseline_loading_24)
+                .placeholder(R.drawable.loading_animation)
                 .error(R.drawable.transparent)
         )
         .into(imgView)
