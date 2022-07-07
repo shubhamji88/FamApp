@@ -1,5 +1,6 @@
 package com.shubham.famapp
 
+import android.content.Context
 import android.content.res.Resources
 import android.text.Html
 import android.text.Spanned
@@ -14,32 +15,42 @@ import com.shubham.famapp.domain.model.BgImageModel
 import com.shubham.famapp.domain.model.FormattedTextModel
 import com.shubham.famapp.domain.model.TextEntitiesModel
 
-class Utils {
-    companion object{
-        fun getFormattedText(data : FormattedTextModel?): Spanned? {
-            if(data?.entities == null || data.text==null){
-                return null
-            }
-            val entities = data.entities
-            var resultText = "<string>"+data.text
-            entities.forEach { model ->
-                resultText = resultText!!.replace("{}","<font color='${model?.color}'>${model?.text}</font>")
-            }
-            resultText+="</string>"
-            return Html.fromHtml(resultText)
+object Utils {
+    fun getFormattedText(data: FormattedTextModel?): Spanned? {
+        if (data?.entities == null || data.text == null) {
+            return null
         }
-        fun getTextAlignment(data : FormattedTextModel?): Int {
-            return when(data?.align){
-                "left" -> Gravity.LEFT
-                "right" -> Gravity.RIGHT
-                "center" -> Gravity.CENTER
-                else -> Gravity.NO_GRAVITY
-            }
+        val entities = data.entities
+        var resultText = "<string>" + data.text
+        entities.forEach { model ->
+            resultText =
+                resultText!!.replace("{}", "<font color='${model?.color}'>${model?.text}</font>")
         }
-        val Number.toPx get() = TypedValue.applyDimension(
+        resultText += "</string>"
+        return Html.fromHtml(resultText)
+    }
+
+    fun getTextAlignment(data: FormattedTextModel?): Int {
+        return when (data?.align) {
+            "left" -> Gravity.LEFT
+            "right" -> Gravity.RIGHT
+            "center" -> Gravity.CENTER
+            else -> Gravity.NO_GRAVITY
+        }
+    }
+
+    val Number.toPx
+        get() = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             this.toFloat(),
-            Resources.getSystem().displayMetrics)
+            Resources.getSystem().displayMetrics
+        )
+
+    fun calculateViewWidth(context: Context, itemCount: Int): Int {
+        val displayMetrics = context.resources.displayMetrics
+        val widthPixels = context.resources.displayMetrics.widthPixels
+        val padding = (56 * displayMetrics.density).toInt()
+        return (widthPixels - padding) / itemCount
     }
 }
 

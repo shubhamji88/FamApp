@@ -13,7 +13,7 @@ import com.shubham.famapp.databinding.ItemHc3Binding
 import com.shubham.famapp.domain.model.CardModel
 import com.shubham.famapp.domain.model.CtaModel
 
-class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, BigDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
+class BigDisplayCardAdapter(private val clickListener: FamClickListener,private val isScrollable:Boolean,private val numberOfItems:Int) : ListAdapter<CardModel, BigDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc3Binding) : RecyclerView.ViewHolder(binding.root){
         private fun updateCallToAction(item: CtaModel, clickListener: FamClickListener){
@@ -79,10 +79,14 @@ class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListA
             binding.executePendingBindings()
         }
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, isScrollable: Boolean, numberOfItems: Int): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemHc3Binding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                val viewHolder = ViewHolder(binding)
+                if(!isScrollable){
+                    viewHolder.itemView.layoutParams.width = Utils.calculateViewWidth(parent.context,numberOfItems)
+                }
+                return viewHolder
             }
         }
     }
@@ -92,6 +96,6 @@ class BigDisplayCardAdapter(private val clickListener: FamClickListener) : ListA
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent,isScrollable,numberOfItems)
     }
 }

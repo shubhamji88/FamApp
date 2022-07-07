@@ -8,9 +8,10 @@ import com.shubham.famapp.Utils
 import com.shubham.famapp.databinding.ItemHc1Binding
 import com.shubham.famapp.domain.model.CardModel
 
-class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, SmallDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
+class SmallDisplayCardAdapter(private val clickListener: FamClickListener,private val isScrollable:Boolean,private val numberOfItems:Int) : ListAdapter<CardModel, SmallDisplayCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc1Binding) : RecyclerView.ViewHolder(binding.root){
+
 
         fun bind(item: CardModel, clickListener: FamClickListener) {
             val title = Utils.getFormattedText(item.formattedTitle) ?: item.title
@@ -20,7 +21,7 @@ class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : Lis
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.icon?.imageType!=null && item.icon?.imageType == "ext") {
+            if(item.icon?.imageType!=null && item.icon.imageType == "ext") {
                 binding.imageURL = item.icon.imageUrl
             }
             binding.title.text = title
@@ -30,10 +31,15 @@ class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : Lis
             binding.executePendingBindings()
         }
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, isScrollable: Boolean, numberOfItems: Int): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemHc1Binding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                val viewHolder = ViewHolder(binding)
+                if(!isScrollable){
+                    viewHolder.itemView.layoutParams.width = Utils.calculateViewWidth(parent.context,numberOfItems)
+                }
+                return viewHolder
+
             }
         }
     }
@@ -43,6 +49,6 @@ class SmallDisplayCardAdapter(private val clickListener: FamClickListener) : Lis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent,isScrollable,numberOfItems)
     }
 }

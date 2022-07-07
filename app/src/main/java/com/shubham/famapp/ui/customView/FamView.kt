@@ -33,6 +33,9 @@ class FamView @JvmOverloads constructor(
     defStyleRes
 ) {
 
+    private lateinit var famAdapter : FamAdapter
+    private lateinit var binding: FamViewBinding
+    private lateinit var listData: List<CardGroupModel>
 
     fun initView(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
         if(::binding.isInitialized){
@@ -57,32 +60,7 @@ class FamView @JvmOverloads constructor(
         super.invalidate()
         SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
     }
-    private fun removedFromData(sharedPrefKey:String): MutableList<CardGroupModel> {
-        val blockedList = when(sharedPrefKey){
-            BLOCKED_CARD_LIST -> SharedPrefManager.instance.blockedCards?.toList()
-            SNOOZED_CARD_LIST -> SharedPrefManager.instance.snoozedCards?.toList()
-            else -> emptyList()
-        }
-        if(blockedList.isNullOrEmpty()){
-            return listData.toMutableList()
-        }
-        val newList = listData.toMutableList()
-        newList.forEach { cardModel->
-            if(cardModel.designType=="HC3"){
-                newList.remove(cardModel)
-                val tempCardModelCards =cardModel.cards?.toMutableList()
-                if(tempCardModelCards?.removeAll(blockedList)== true) {
-                    cardModel.cards = tempCardModelCards
-                }else if(tempCardModelCards?.remove(blockedList[0])==true){
-                    cardModel.cards = tempCardModelCards
-                }
-                if(tempCardModelCards?.size!=0){
-                    newList.add(cardModel)
-                }
-            }
-        }
-        return newList
-    }
+
     private val sharedPreferencesChangeListener =SharedPreferences.OnSharedPreferenceChangeListener{ _, key ->
             dataReloaded(removedFromData(key))
         }
@@ -112,9 +90,33 @@ class FamView @JvmOverloads constructor(
             ),null
         )
     }
-    private lateinit var famAdapter : FamAdapter
-    private lateinit var binding: FamViewBinding
-    private lateinit var listData: List<CardGroupModel>
+
+    private fun removedFromData(sharedPrefKey:String): MutableList<CardGroupModel> {
+        val blockedList = when(sharedPrefKey){
+            BLOCKED_CARD_LIST -> SharedPrefManager.instance.blockedCards?.toList()
+            SNOOZED_CARD_LIST -> SharedPrefManager.instance.snoozedCards?.toList()
+            else -> emptyList()
+        }
+        if(blockedList.isNullOrEmpty()){
+            return listData.toMutableList()
+        }
+        val newList = listData.toMutableList()
+        newList.forEach { cardModel->
+            if(cardModel.designType=="HC3"){
+                newList.remove(cardModel)
+                val tempCardModelCards =cardModel.cards?.toMutableList()
+                if(tempCardModelCards?.removeAll(blockedList)== true) {
+                    cardModel.cards = tempCardModelCards
+                }else if(tempCardModelCards?.remove(blockedList[0])==true){
+                    cardModel.cards = tempCardModelCards
+                }
+                if(tempCardModelCards?.size!=0){
+                    newList.add(cardModel)
+                }
+            }
+        }
+        return newList
+    }
 }
 class ReloadClickListener(val reloadClickListener: (Unit)-> Unit){
     fun onReload()= reloadClickListener(Unit)

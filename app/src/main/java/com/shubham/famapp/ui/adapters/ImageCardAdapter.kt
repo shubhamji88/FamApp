@@ -8,7 +8,7 @@ import com.shubham.famapp.Utils
 import com.shubham.famapp.databinding.ItemHc5Binding
 import com.shubham.famapp.domain.model.CardModel
 
-class ImageCardAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, ImageCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
+class ImageCardAdapter(private val clickListener: FamClickListener,private val isScrollable:Boolean,private val numberOfItems:Int) : ListAdapter<CardModel, ImageCardAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc5Binding) : RecyclerView.ViewHolder(binding.root){
 
@@ -18,17 +18,21 @@ class ImageCardAdapter(private val clickListener: FamClickListener) : ListAdapte
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.bgImage?.imageType!=null && item.bgImage?.imageType == "ext") {
+            if(item.bgImage?.imageType!=null && item.bgImage.imageType == "ext") {
                 binding.imageURL = item.bgImage.imageUrl
             }
             binding.rootViewCv.isEnabled = !item.isDisabled
             binding.executePendingBindings()
         }
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, isScrollable: Boolean, numberOfItems: Int): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemHc5Binding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                val viewHolder = ViewHolder(binding)
+                if(!isScrollable){
+                    viewHolder.itemView.layoutParams.width = Utils.calculateViewWidth(parent.context,numberOfItems)
+                }
+                return viewHolder
             }
         }
     }
@@ -38,6 +42,6 @@ class ImageCardAdapter(private val clickListener: FamClickListener) : ListAdapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent,isScrollable,numberOfItems)
     }
 }

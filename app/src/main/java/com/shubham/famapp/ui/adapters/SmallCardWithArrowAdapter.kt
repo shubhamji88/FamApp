@@ -9,7 +9,7 @@ import com.shubham.famapp.databinding.ItemHc6Binding
 import com.shubham.famapp.domain.model.CardModel
 
 
-class SmallCardWithArrowAdapter(private val clickListener: FamClickListener) : ListAdapter<CardModel, SmallCardWithArrowAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
+class SmallCardWithArrowAdapter(private val clickListener: FamClickListener,private val isScrollable:Boolean,private val numberOfItems:Int) : ListAdapter<CardModel, SmallCardWithArrowAdapter.ViewHolder>(CardRecyclerViewDiffCallBack()) {
 
     class ViewHolder private constructor(private val binding: ItemHc6Binding) : RecyclerView.ViewHolder(binding.root){
 
@@ -21,7 +21,7 @@ class SmallCardWithArrowAdapter(private val clickListener: FamClickListener) : L
                     clickListener.openUrl(item.url)
                 }
             }
-            if(item.icon?.imageType!=null && item.icon?.imageType == "ext") {
+            if(item.icon?.imageType!=null && item.icon.imageType == "ext") {
                 binding.imageURL = item.icon.imageUrl
             }
             binding.title.text = title
@@ -31,10 +31,14 @@ class SmallCardWithArrowAdapter(private val clickListener: FamClickListener) : L
             binding.executePendingBindings()
         }
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, isScrollable: Boolean, numberOfItems: Int): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ItemHc6Binding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                val viewHolder = ViewHolder(binding)
+                if(!isScrollable){
+                    viewHolder.itemView.layoutParams.width = Utils.calculateViewWidth(parent.context,numberOfItems)
+                }
+                return viewHolder
             }
         }
     }
@@ -44,6 +48,6 @@ class SmallCardWithArrowAdapter(private val clickListener: FamClickListener) : L
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(parent,isScrollable,numberOfItems)
     }
 }
