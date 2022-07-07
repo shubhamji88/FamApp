@@ -3,8 +3,6 @@ package com.shubham.famapp.data.entity
 
 import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.BgImageModel
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
 
 data class BgImageEntity(

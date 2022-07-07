@@ -30,12 +30,16 @@ class HomeFragment: Fragment() {
         return binding.root
     }
 
+    /**
+     * The FamView require data (which is List<CardGroupModel>) and a ReloadClickListener to handle the pull down gesture
+     */
     private fun initFamView(){
-        viewModel.data.observe(viewLifecycleOwner) {
+        viewModel.cardData.observe(viewLifecycleOwner) {
             if(it?.cardGroups != null) {
                 binding.famView.initView(it.cardGroups, ReloadClickListener {
                     refreshData()
                 })
+                binding.progressPb.visibility = View.GONE
             }
         }
     }

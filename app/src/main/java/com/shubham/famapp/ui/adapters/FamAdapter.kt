@@ -17,6 +17,10 @@ import kotlinx.coroutines.withContext
 class FamAdapter(private val clickListener: FamClickListener) : ListAdapter<DesignTypes, FamAdapter.ViewHolder>(FamRecyclerViewDiffCallBack()) {
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
+    /**
+     * Here the list of modified according to its design type
+     * @param list: this list supplied from FamView
+     */
     fun submitDesignList(list: List<CardGroupModel>) {
         adapterScope.launch {
             val items = list.map { DesignTypes.getType(it.designType,it) }
@@ -50,10 +54,7 @@ class FamAdapter(private val clickListener: FamClickListener) : ListAdapter<Desi
             binding.groupItemRv.adapter = imageCardAdapter
             imageCardAdapter.submitList(cardData.cards)
         }
-        private fun bindSmallCardWithArrowCard(
-            cardData: CardGroupModel,
-            clickListener: FamClickListener
-        ){
+        private fun bindSmallCardWithArrowCard(cardData: CardGroupModel, clickListener: FamClickListener){
             val smallCardWithArrowAdapter = SmallCardWithArrowAdapter(clickListener,cardData.isScrollable,cardData.cards?.size ?:1)
             binding.groupItemRv.adapter = smallCardWithArrowAdapter
             smallCardWithArrowAdapter.submitList(cardData.cards)
@@ -67,6 +68,11 @@ class FamAdapter(private val clickListener: FamClickListener) : ListAdapter<Desi
             dynamicWidthCardAdapter.submitList(cardData.cards)
         }
 
+        /**
+         * Used to bind different recycler view's as items for this recycler view depending upon their type
+         * @param item: These are of DesignTypes which contains card data
+         * @param clickListener: click listener to pass to famView to open URL
+         */
         fun bind(item: DesignTypes,clickListener: FamClickListener) {
             when(item){
                 is DesignTypes.SMALL_DISPLAY_CLASS -> bindSmallDisplayCard(item.cardData,clickListener)

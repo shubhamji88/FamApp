@@ -2,6 +2,9 @@ package com.shubham.famapp.domain
 
 import com.shubham.famapp.domain.model.CardGroupModel
 
+/**
+ * Different types of design types of card list
+ */
 sealed class DesignTypes{
     abstract val id: Int
     data class SMALL_DISPLAY_CLASS(val cardData : CardGroupModel) :DesignTypes(){

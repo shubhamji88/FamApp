@@ -39,6 +39,10 @@ class FamView @JvmOverloads constructor(
     private lateinit var binding: FamViewBinding
     private lateinit var listData: List<CardGroupModel>
 
+    /**
+     * @param data: List of CardGroupModel that is required to display data
+     * @param reloadClickListener: used when user use swipe gesture to reload data
+     */
     fun initView(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
         if(::binding.isInitialized){
             dataReloaded(removedFromData(BLOCKED_CARD_LIST))
@@ -53,24 +57,37 @@ class FamView @JvmOverloads constructor(
         handleSwipeReload(reloadClickListener)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        SharedPrefManager.instance.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
-    }
 
-    override fun invalidate() {
-        super.invalidate()
-        SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
-    }
+//    override fun onAttachedToWindow() {
+//        super.onAttachedToWindow()
+//        SharedPrefManager.instance.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
+//    }
+//
+//    override fun invalidate() {
+//        super.invalidate()
+//        SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
+//    }
 
+    /**
+     * Used when user "press dismiss" or "remind later" in HC3.
+     * According to key, the dismissed/snoozed list if fetched from shared Preferences and dataReload is called with new
+     * list with removed dismissed/snoozed elements
+     */
     private val sharedPreferencesChangeListener =SharedPreferences.OnSharedPreferenceChangeListener{ _, key ->
             dataReloaded(removedFromData(key))
         }
+
+    /**
+     * @param data: New data to be provided to recycler view
+     */
     private fun dataReloaded(data : MutableList<CardGroupModel>) {
         famAdapter.submitDesignList(data)
         binding.swipeLayout.isRefreshing = false
     }
 
+    /**
+     * Initializes the main recycler view which has recycler views as items in it
+     */
     private fun initRecyclerView(){
         famAdapter = FamAdapter (FamClickListener{ url->
             openUrl(url)
@@ -78,12 +95,21 @@ class FamView @JvmOverloads constructor(
         famAdapter.submitDesignList(removedFromData(BLOCKED_CARD_LIST))
         binding.mainRv.adapter = famAdapter
     }
+
+    /**
+     * This function calls the ReloadClickListener which should be implemented by the fragment/activity
+     * @param reloadClickListener : to be called when swipe gesture is activated
+     */
     private fun handleSwipeReload(reloadClickListener: ReloadClickListener) {
         binding.swipeLayout.setOnRefreshListener {
             reloadClickListener.onReload()
         }
     }
 
+    /**
+     * Used to open url if user clicks on card or CTA action button
+     * @param url: url of the website
+     */
     private fun openUrl(url:String){
         startActivity(context,
             Intent(
@@ -93,6 +119,12 @@ class FamView @JvmOverloads constructor(
         )
     }
 
+    /**
+     * This function
+     * @param sharedPrefKey : It can be BLOCKED_CARD_LIST or SNOOZED_CARD_LIST
+     * @return MutableList<CardGroupModel>: removes the snoozed list or the dismissed list (depending upon key) from the listData and returns
+     * mutable list
+     */
     private fun removedFromData(sharedPrefKey:String): MutableList<CardGroupModel> {
         val blockedList = when(sharedPrefKey){
             BLOCKED_CARD_LIST -> SharedPrefManager.instance.blockedCards?.toList()

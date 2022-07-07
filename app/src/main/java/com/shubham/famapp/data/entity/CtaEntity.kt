@@ -3,8 +3,6 @@ package com.shubham.famapp.data.entity
 
 import com.google.gson.annotations.SerializedName
 import com.shubham.famapp.domain.model.CtaModel
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
 
 data class CtaEntity(
@@ -19,4 +17,4 @@ data class CtaEntity(
     @SerializedName("url_choice")
     val urlChoice: String?
 )
-fun CtaEntity.convertToModel() : CtaModel? = CtaModel(bgColor,text,textColor,url,urlChoice)
+fun CtaEntity.convertToModel() : CtaModel = CtaModel(bgColor,text,textColor,url,urlChoice)

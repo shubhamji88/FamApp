@@ -20,6 +20,9 @@ class SharedPrefManager(val context: Context) {
     private fun getString(key: String?): String? {
         return sharedPreferences.getString(key, "")
     }
+    /**
+     * Used to store uid (Unique id) of the dismissed card's
+     */
     var blockedCards: List<Int>?
         get() {
             return getString(BLOCKED_CARD_LIST)?.let {
@@ -36,6 +39,9 @@ class SharedPrefManager(val context: Context) {
             }
         }
 
+    /**
+     * Used to store uid (Unique id) of the card's where remind later is clicked
+     */
     var snoozedCards: List<Int>?
         get() {
             return getString(SNOOZED_CARD_LIST)?.let {

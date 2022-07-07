@@ -6,7 +6,6 @@ import com.shubham.famapp.di.IoDispatcher
 import com.shubham.famapp.domain.InternetNotAvailable
 import com.shubham.famapp.domain.model.FamCardModel
 import com.shubham.famapp.domain.repository.RemoteRepo
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
