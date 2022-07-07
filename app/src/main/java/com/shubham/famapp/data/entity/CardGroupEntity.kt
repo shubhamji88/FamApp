@@ -27,4 +27,22 @@ data class CardGroupEntity(
     val name: String?
 )
 //TODO remove !!
-fun CardGroupEntity.convertToModel() : CardGroupModel = CardGroupModel(cardType,cards?.map { it?.convertToModel() },designType!!,height,id!!,isScrollable,level, name)
+fun CardGroupEntity.convertToModel(): CardGroupModel {
+    return CardGroupModel(cardType, cards?.mapIndexed { index, cardEntity ->
+        CardModel(
+            (id ?: 0) + (level ?: 0) + index,
+            cardEntity?.bgColor,
+            cardEntity?.bgImage?.convertToModel(),
+            cardEntity?.cta?.map { it?.convertToModel() },
+            cardEntity?.description,
+            cardEntity?.formattedDescription?.convertToModel(),
+            cardEntity?.formattedTitle?.convertToModel(),
+            cardEntity?.icon?.convertToModel(),
+            cardEntity?.isDisabled ?: false,
+            name,
+            cardEntity?.title,
+            cardEntity?.url
+        )
+    }?.toMutableList(), designType!!, height, id!!, isScrollable, level, name)
+}
+

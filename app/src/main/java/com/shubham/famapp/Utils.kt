@@ -49,20 +49,20 @@ object Utils {
     fun calculateViewWidth(context: Context, itemCount: Int): Int {
         val displayMetrics = context.resources.displayMetrics
         val widthPixels = context.resources.displayMetrics.widthPixels
-        val padding = (56 * displayMetrics.density).toInt()
+        val padding = (58 * displayMetrics.density).toInt()
         return (widthPixels - padding) / itemCount
     }
 }
 
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
-        val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
-        Glide.with(imgView.context)
-            .load(imgUri)
-            .apply(
-                RequestOptions()
-                    .placeholder(R.drawable.ic_baseline_loading_24)
-                    .error(R.drawable.transparent)
-            )
-            .into(imgView)
+    val imgUri = imgUrl?.toUri()?.buildUpon()?.scheme("https")?.build()
+    Glide.with(imgView.context)
+        .load(imgUri)
+        .apply(
+            RequestOptions()
+                .placeholder(R.drawable.ic_baseline_loading_24)
+                .error(R.drawable.transparent)
+        )
+        .into(imgView)
 }

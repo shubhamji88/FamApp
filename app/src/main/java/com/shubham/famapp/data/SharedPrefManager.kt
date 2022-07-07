@@ -20,11 +20,11 @@ class SharedPrefManager(val context: Context) {
     private fun getString(key: String?): String? {
         return sharedPreferences.getString(key, "")
     }
-    var blockedCards: List<CardModel>?
+    var blockedCards: List<Int>?
         get() {
             return getString(BLOCKED_CARD_LIST)?.let {
                 if (it.isBlank()) null else
-                    Gson().fromJson(it, Array<CardModel>::class.java).toList()
+                    Gson().fromJson(it, Array<Int>::class.java).toList()
             }
         }
         set(blockedList) {
@@ -36,11 +36,11 @@ class SharedPrefManager(val context: Context) {
             }
         }
 
-    var snoozedCards: List<CardModel>?
+    var snoozedCards: List<Int>?
         get() {
             return getString(SNOOZED_CARD_LIST)?.let {
                 if (it.isBlank()) null else
-                    Gson().fromJson(it, Array<CardModel>::class.java).toList()
+                    Gson().fromJson(it, Array<Int>::class.java).toList()
             }
         }
         set(blockedList) {

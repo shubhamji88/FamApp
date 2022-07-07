@@ -2,7 +2,7 @@ package com.shubham.famapp.domain.model
 
 data class CardGroupModel(
     val cardType: Int?,
-    var cards: List<CardModel?>?,
+    var cards: MutableList<CardModel?>?,
     val designType: String,
     val height: Int?,
     val id: Int,

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.startActivity
@@ -19,6 +20,7 @@ import com.shubham.famapp.domain.model.CardGroupModel
 import com.shubham.famapp.domain.model.CardModel
 import com.shubham.famapp.ui.adapters.FamAdapter
 import com.shubham.famapp.ui.adapters.FamClickListener
+import java.util.function.Predicate
 
 
 class FamView @JvmOverloads constructor(
@@ -103,15 +105,15 @@ class FamView @JvmOverloads constructor(
         val newList = listData.toMutableList()
         newList.forEach { cardModel->
             if(cardModel.designType=="HC3"){
-                newList.remove(cardModel)
-                val tempCardModelCards =cardModel.cards?.toMutableList()
-                if(tempCardModelCards?.removeAll(blockedList)== true) {
-                    cardModel.cards = tempCardModelCards
-                }else if(tempCardModelCards?.remove(blockedList[0])==true){
-                    cardModel.cards = tempCardModelCards
+                cardModel.cards?.forEach { card->
+                    if(card!=null && blockedList.contains(card.uid)){
+                        val tempList = cardModel.cards!!.toMutableList()
+                        tempList.removeIf { temp: CardModel? -> temp?.uid == card.uid }
+                        cardModel.cards = tempList
+                    }
                 }
-                if(tempCardModelCards?.size!=0){
-                    newList.add(cardModel)
+                if(cardModel.cards.isNullOrEmpty()){
+                    newList.remove(cardModel)
                 }
             }
         }

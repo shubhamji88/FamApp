@@ -32,8 +32,3 @@ data class CardEntity(
     val url: String?
 
 )
-fun CardEntity.convertToModel() : CardModel {
-    return CardModel(
-        bgColor,bgImage?.convertToModel(),cta?.map { it?.convertToModel() },description,formattedDescription?.convertToModel(),formattedTitle?.convertToModel(),icon?.convertToModel(),isDisabled,name,title,url
-    )
-}

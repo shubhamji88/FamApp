@@ -1,6 +1,7 @@
 package com.shubham.famapp.domain.model
 
 data class CardModel(
+    val uid:Int,
     val bgColor: String?,
     val bgImage: BgImageModel?,
     val cta: List<CtaModel?>?,
