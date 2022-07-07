@@ -46,6 +46,12 @@ object Utils {
             Resources.getSystem().displayMetrics
         )
 
+    /**
+     * This is used when is_scrollable is false
+     * @param context: to get displayMetrics
+     * @param itemCount: count of number of items of that recycler view
+     * @return Int: width of each element of recycler view
+     */
     fun calculateViewWidth(context: Context, itemCount: Int): Int {
         val displayMetrics = context.resources.displayMetrics
         val widthPixels = context.resources.displayMetrics.widthPixels
