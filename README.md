@@ -5,15 +5,16 @@
 This project provides a custom view (FamView) that require List<CardGroupModel> (Defined in project) and a ReloadClickListener to handle the pull down gesture case of
 reloading data.
 
-# APK LINK
+## APK LINK
 https://drive.google.com/file/d/16hYMZ2rD1i5t5IWo0q2sxFjryV7geJPZ/view?usp=sharing
 
-# App's Data flow
+## App's Data flow
 ![image](https://user-images.githubusercontent.com/56815364/177750163-86ea39d6-bbcb-412e-906e-b140295daafb.png)
 
-# FamView's Data flow
+## FamView's Data Flow
+![image](https://user-images.githubusercontent.com/56815364/177752400-f450c2f0-1ed1-4ea7-a06b-fdcfed5d8734.png)
 
-# ScreenShots
+## ScreenShots
 ![WhatsApp Image 2022-07-07 at 3 15 23 PM](https://user-images.githubusercontent.com/56815364/177744621-d0cdad9b-d069-4ddc-a43b-dddda0bd8d6d.jpeg)
 ![WhatsApp Image 2022-07-07 at 3 15 22 PM](https://user-images.githubusercontent.com/56815364/177744629-180ccaa7-7601-444d-a33c-f88a801371f0.jpeg)
 
