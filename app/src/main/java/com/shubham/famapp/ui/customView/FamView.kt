@@ -58,15 +58,15 @@ class FamView @JvmOverloads constructor(
     }
 
 
-//    override fun onAttachedToWindow() {
-//        super.onAttachedToWindow()
-//        SharedPrefManager.instance.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
-//    }
-//
-//    override fun invalidate() {
-//        super.invalidate()
-//        SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
-//    }
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        SharedPrefManager.instance.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
+    }
 
     /**
      * Used when user "press dismiss" or "remind later" in HC3.
