@@ -26,7 +26,7 @@ data class CardGroupEntity(
     @SerializedName("name")
     val name: String?
 )
-//TODO remove !!
+
 fun CardGroupEntity.convertToModel(): CardGroupModel {
     return CardGroupModel(cardType, cards?.mapIndexed { index, cardEntity ->
         CardModel(

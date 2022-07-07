@@ -12,5 +12,11 @@ data class FamCardEntity(
     @SerializedName("card_groups")
     val cardGroups: List<CardGroupEntity?>?
 )
-//TODO remove !!
-fun FamCardEntity.convertToDomain() : FamCardModel = FamCardModel(cardGroups?.map { it?.convertToModel()!! })
+fun FamCardEntity.convertToDomain() : FamCardModel {
+    if(cardGroups.isNullOrEmpty()){
+        return FamCardModel(null)
+    }
+    val mutableCardGroup =cardGroups.toMutableList()
+    mutableCardGroup.removeAll(listOf(null))
+    return FamCardModel(cardGroups.map { it?.convertToModel()!! })
+}
