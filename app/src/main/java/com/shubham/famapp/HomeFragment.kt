@@ -1,7 +1,6 @@
 package com.shubham.famapp
 
-import android.content.Intent
-import android.net.Uri
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.shubham.famapp.databinding.HomeFragmentBinding
-import com.shubham.famapp.ui.adapters.FamAdapter
-import com.shubham.famapp.ui.adapters.FamClickListener
-import com.shubham.famapp.ui.customView.ReloadClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,25 +21,6 @@ class HomeFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding= DataBindingUtil.inflate(inflater,R.layout.home_fragment,container,false)
-        refreshData()
-        initFamView()
         return binding.root
-    }
-
-    /**
-     * The FamView require data (which is List<CardGroupModel>) and a ReloadClickListener to handle the pull down gesture
-     */
-    private fun initFamView(){
-        viewModel.cardData.observe(viewLifecycleOwner) {
-            if(it?.cardGroups != null) {
-                binding.famView.initDataAndReloadClickListener(it.cardGroups, ReloadClickListener {
-                    refreshData()
-                })
-            }
-        }
-    }
-
-    private fun refreshData(){
-        viewModel.call()
     }
 }

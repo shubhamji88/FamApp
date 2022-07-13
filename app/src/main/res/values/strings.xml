@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FamApp</string>
+    <string name="view_coroutine_scope">FamCScope</string>
 </resources>

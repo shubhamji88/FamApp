@@ -11,21 +11,26 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.viewModelScope
 import com.shubham.famapp.R
 import com.shubham.famapp.data.SharedPrefManager
 import com.shubham.famapp.data.SharedPrefManager.Companion.BLOCKED_CARD_LIST
 import com.shubham.famapp.data.SharedPrefManager.Companion.SNOOZED_CARD_LIST
 import com.shubham.famapp.databinding.FamViewBinding
 import com.shubham.famapp.domain.model.CardGroupModel
+import com.shubham.famapp.domain.usecase.GetCardDataUseCase
 import com.shubham.famapp.ui.adapters.FamAdapter
 import com.shubham.famapp.ui.adapters.FamClickListener
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class FamView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
     defStyleAttr: Int = 0,
-    defStyleRes: Int = 0,
+    defStyleRes: Int = 0
 ) : LinearLayout(
     context,
     attrs,
@@ -36,28 +41,62 @@ class FamView @JvmOverloads constructor(
     private lateinit var famAdapter : FamAdapter
     private lateinit var binding: FamViewBinding
     private lateinit var listData: List<CardGroupModel>
+    @Inject
+    lateinit var cardDataUseCase: GetCardDataUseCase
+    private val View.viewScope: CoroutineScope
+        get() {
+            val storedScope = getTag(R.string.view_coroutine_scope) as? CoroutineScope
+            if (storedScope != null) {
+                return storedScope
+            }
+            val newScope = ViewCoroutineScope()
+            if (isAttachedToWindow) {
+                addOnAttachStateChangeListener(newScope)
+                setTag(R.string.view_coroutine_scope, newScope)
+            } else {
+                newScope.cancel()
+            }
+            return newScope
+        }
 
+    private class ViewCoroutineScope : CoroutineScope, OnAttachStateChangeListener {
+        override val coroutineContext = SupervisorJob() + Dispatchers.Main
 
-    init{
-        initView()
+        override fun onViewAttachedToWindow(view: View) = Unit
+
+        override fun onViewDetachedFromWindow(view: View) {
+            coroutineContext.cancel()
+            view.setTag(R.string.view_coroutine_scope, null)
+        }
     }
+
+    /**
+     * This is called after onAttachedToWindow to inflate views and start fetching of data and handle swipe gesture
+     */
     private fun initView(){
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = DataBindingUtil.inflate(inflater,R.layout.fam_view, this, true)
+        fetchAndInitData()
+        handleSwipeReload()
     }
+
+    private fun reloadData() {
+        viewScope.launch {
+            listData =cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull()?.cardGroups!!
+            dataReloaded(removedFromData(BLOCKED_CARD_LIST))
+        }
+    }
+
     /**
-     * @param data: List of CardGroupModel that is required to display data
-     * @param reloadClickListener: used when user use swipe gesture to reload data
+     * This function fetches data from internet and initializes recycler view and sends data to it
      */
-    fun initDataAndReloadClickListener(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
-        // For subsequent call of this function, we only need to update the data
-        if(binding.progressPb.visibility==View.VISIBLE){
+    private fun fetchAndInitData(){
+        viewScope.launch {
+            listData =cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull()?.cardGroups!!
             initRecyclerView()
             removeProgressBar()
+            dataReloaded(removedFromData(BLOCKED_CARD_LIST))
         }
-        listData = data
-        dataReloaded(removedFromData(BLOCKED_CARD_LIST))
-        handleSwipeReload(reloadClickListener)
     }
 
     private fun removeProgressBar() {
@@ -65,6 +104,7 @@ class FamView @JvmOverloads constructor(
     }
     override fun onAttachedToWindow(){
         super.onAttachedToWindow()
+        initView()
         SharedPrefManager.instance.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
     }
     override fun onDetachedFromWindow() {
@@ -99,13 +139,10 @@ class FamView @JvmOverloads constructor(
         binding.mainRv.adapter = famAdapter
     }
 
-    /**
-     * This function calls the ReloadClickListener which should be implemented by the fragment/activity
-     * @param reloadClickListener : to be called when swipe gesture is activated
-     */
-    private fun handleSwipeReload(reloadClickListener: ReloadClickListener) {
+
+    private fun handleSwipeReload() {
         binding.swipeLayout.setOnRefreshListener {
-            reloadClickListener.onReload()
+            reloadData()
         }
     }
 
@@ -150,7 +187,4 @@ class FamView @JvmOverloads constructor(
         return newList
     }
 
-}
-class ReloadClickListener(val reloadClickListener: (Unit)-> Unit){
-    fun onReload()= reloadClickListener(Unit)
 }
