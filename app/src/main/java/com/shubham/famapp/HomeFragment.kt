@@ -36,10 +36,9 @@ class HomeFragment: Fragment() {
     private fun initFamView(){
         viewModel.cardData.observe(viewLifecycleOwner) {
             if(it?.cardGroups != null) {
-                binding.famView.initView(it.cardGroups, ReloadClickListener {
+                binding.famView.initDataAndReloadClickListener(it.cardGroups, ReloadClickListener {
                     refreshData()
                 })
-                binding.progressPb.visibility = View.GONE
             }
         }
     }

@@ -6,8 +6,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
@@ -17,10 +17,8 @@ import com.shubham.famapp.data.SharedPrefManager.Companion.BLOCKED_CARD_LIST
 import com.shubham.famapp.data.SharedPrefManager.Companion.SNOOZED_CARD_LIST
 import com.shubham.famapp.databinding.FamViewBinding
 import com.shubham.famapp.domain.model.CardGroupModel
-import com.shubham.famapp.domain.model.CardModel
 import com.shubham.famapp.ui.adapters.FamAdapter
 import com.shubham.famapp.ui.adapters.FamClickListener
-import java.util.function.Predicate
 
 
 class FamView @JvmOverloads constructor(
@@ -33,38 +31,44 @@ class FamView @JvmOverloads constructor(
     attrs,
     defStyleAttr,
     defStyleRes
-) {
+){
 
     private lateinit var famAdapter : FamAdapter
     private lateinit var binding: FamViewBinding
     private lateinit var listData: List<CardGroupModel>
 
+
+    init{
+        initView()
+    }
+    private fun initView(){
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        binding = DataBindingUtil.inflate(inflater,R.layout.fam_view, this, true)
+    }
     /**
      * @param data: List of CardGroupModel that is required to display data
      * @param reloadClickListener: used when user use swipe gesture to reload data
      */
-    fun initView(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
-        if(::binding.isInitialized){
-            dataReloaded(removedFromData(BLOCKED_CARD_LIST))
-            listData = data
-            return
+    fun initDataAndReloadClickListener(data: List<CardGroupModel>, reloadClickListener:ReloadClickListener) {
+        // For subsequent call of this function, we only need to update the data
+        if(binding.progressPb.visibility==View.VISIBLE){
+            initRecyclerView()
+            removeProgressBar()
         }
-        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        binding = DataBindingUtil.inflate(inflater,R.layout.fam_view, this, true)
         listData = data
-        initRecyclerView()
         dataReloaded(removedFromData(BLOCKED_CARD_LIST))
         handleSwipeReload(reloadClickListener)
     }
 
-
-    override fun onAttachedToWindow() {
+    private fun removeProgressBar() {
+        binding.progressPb.visibility = View.GONE
+    }
+    override fun onAttachedToWindow(){
         super.onAttachedToWindow()
         SharedPrefManager.instance.sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
     }
-
-    override fun invalidate() {
-        super.invalidate()
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
         SharedPrefManager.instance.sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesChangeListener)
     }
 
@@ -92,7 +96,6 @@ class FamView @JvmOverloads constructor(
         famAdapter = FamAdapter (FamClickListener{ url->
             openUrl(url)
         })
-        famAdapter.submitDesignList(removedFromData(BLOCKED_CARD_LIST))
         binding.mainRv.adapter = famAdapter
     }
 
@@ -146,6 +149,7 @@ class FamView @JvmOverloads constructor(
         }
         return newList
     }
+
 }
 class ReloadClickListener(val reloadClickListener: (Unit)-> Unit){
     fun onReload()= reloadClickListener(Unit)
