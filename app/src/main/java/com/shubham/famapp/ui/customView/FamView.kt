@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.viewModelScope
@@ -92,9 +93,13 @@ class FamView @JvmOverloads constructor(
      */
     private fun fetchAndInitData(){
         viewScope.launch {
-            listData =cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull()?.cardGroups!!
-            initRecyclerView()
+            listData =cardDataUseCase.invoke(GetCardDataUseCase.Params("")).getOrNull()?.cardGroups ?: emptyList()
             removeProgressBar()
+            initRecyclerView()
+            if(listData.isNullOrEmpty()){
+                Toast.makeText(context, "Check your internet!!", Toast.LENGTH_LONG).show()
+                return@launch
+            }
             dataReloaded(removedFromData(BLOCKED_CARD_LIST))
         }
     }
